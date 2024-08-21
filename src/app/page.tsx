@@ -5,11 +5,15 @@ import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
 interface Todostate {
-  todo: string[];
+  todo: todoListinterface;
+}
+
+interface todoListinterface {
+  todoList: object[]
 }
 
 export default function Home() {
-  const todos = useSelector((state: Todostate) => state?.todo);
+  const todos = useSelector((state: Todostate) => state?.todo.todoList);
 
   console.log(todos);
 
@@ -17,9 +21,9 @@ export default function Home() {
     <main className="flex justify-center">
       {todos.length > 0 && (
         <div className="md:w-1/2 border border-black p-4 mt-10 rounded flex flex-col gap-2">
-          {todos.map((todo) => (
-            <div key={todo} className="bg-black text-white px-3 py-2 rounded">
-              <p>{todo}</p>
+          {todos.map((todo: object) => (
+            <div key={todo.todo} className="bg-black text-white px-3 py-2 rounded">
+              <p>{todo.todo}</p>
             </div>
           ))}
         </div>

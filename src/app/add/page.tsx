@@ -5,12 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 
 interface TodoState {
-  todo: string[];
+  todo: {todoList: object[]};
 }
 
 const Add = () => {
   const [inputValue, setInputValue] = useState<string>('');
-  const todos = useSelector((state: TodoState) => state?.todo);
+  const todos = useSelector((state: TodoState) => state?.todo.todoList);
   const dispatch = useDispatch();
 
   const inputOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,12 +51,12 @@ const Add = () => {
       {todos.length > 0 && (
         <div>
           <div className="border border-black mt-10 p-2 md:w-1/2 mx-auto flex flex-col gap-2 rounded">
-            {todos.map((todo, index: number) => (
+            {todos.map((todo , index: number) => (
               <div
-                key={todo}
+                key={todo.todo}
                 className="px-2 py-3 bg-black text-white rounded flex items-center justify-between gap-2"
               >
-                <p className="text-wrap">{todo}</p>
+                <p className="text-wrap">{todo.todo}</p>
                 <div className="flex items-center justify-center">
                   <RiDeleteBin6Line
                     onClick={() => deleteTodo(index)}

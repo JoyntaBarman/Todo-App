@@ -1,24 +1,30 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+interface initState {
+  todoList: object[];
+}
+
 const todoConfigure = createSlice({
   name: 'todo',
-  initialState: [],
+  initialState: {
+    todoList: [],
+  },
   reducers: {
-    add: (state: string[], actions) => {
+    add: (state: {todoList: object[]}, actions) => {
       const value = actions.payload.todo;
       if (value) {
-        state.push(value);
+        state.todoList.push({ todo: value });
       }
     },
     remove: (state, actions) => {
       if (actions.payload.index === 'all') {
-        return [];
+        return {todoList: []};
       }
-      const newArr = state.filter(
+      const newArr = state.todoList.filter(
         (value: string, index: number) => index !== actions?.payload?.index
       );
 
-      return newArr;
+      return {todoList: newArr};
     },
   },
 });

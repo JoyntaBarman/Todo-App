@@ -15,7 +15,7 @@ const persistedReducer = persistReducer(persistConfig, todoReducer);
 
  const store = configureStore ({
   reducer: {
-    todo : todoReducer,
+    todo : persistedReducer,
   }
 })
 
