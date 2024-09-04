@@ -1,84 +1,86 @@
-'use client';
-import { add, remove } from '@/feature/todo/todoConfigure';
-import React, { useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RiDeleteBin6Line } from 'react-icons/ri';
-
-interface TodoState {
-  todo: {todoList: object[]};
-}
+"use client";
+import TodoList from "@/components/TodoList";
+import { add } from "@/feature/todo/todoConfigure";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
 
 const Add = () => {
-  const [inputValue, setInputValue] = useState<string>('');
-  const todos = useSelector((state: TodoState) => state?.todo.todoList);
+  const [inputTitle, setInputTitle] = useState<string>("");
+  const [inputDescription, setInputDescription] = useState<string>("");
+
   const dispatch = useDispatch();
 
-  const inputOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setInputValue(value);
+    setInputTitle(value);
+  };
+
+  const handleInputDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputDescription(value);
   };
 
   const getInputTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (inputValue) {
-      dispatch(add({ todo: inputValue }));
-      setInputValue('');
+    if (inputTitle && inputDescription) {
+      dispatch(add({ title: inputTitle, description: inputDescription }));
+      setInputTitle("");
+      setInputDescription("");
+      Swal.fire({
+        title: "Added your todo!",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1000
+      })
     }
   };
 
-  const deleteTodo = (index: number | string) => {
-    dispatch(remove({ index: index }));
-  };
-
   return (
-    <div className="px-4 md:px-0">
+    <div className="px-4 md:px-0 py-5">
       <form
         onSubmit={getInputTodo}
-        className="border border-black mt-10 p-2 md:w-1/2 mx-auto flex gap-2 items-center justify-between rounded"
+        className="border border-black mt-10 p-2 md:w-1/2 mx-auto flex flex-col lg:flex-row justify-between lg:items-end gap-5 rounded bg-black"
       >
-        <input
-          onChange={inputOnchange}
-          className="outline-none  flex-1 h-full"
-          type="text"
-          placeholder="Type your todo."
-          value={inputValue}
-        />
-        <button type="submit" className="px-4 py-3 bg-black text-white rounded">
+        <div className="flex-1 flex flex-col gap-3">
+          <label htmlFor="title" className="font-bold text-white">
+            Title:
+          </label>
+
+          <input
+            id="title"
+            onChange={handleInputTitle}
+            className="outline-none border border-black rounded w-full px-3 py-2 text-black"
+            type="text"
+            placeholder="What's the title."
+            value={inputTitle}
+            required
+          />
+        </div>
+        <div className="flex-1 flex flex-col gap-3">
+          <label htmlFor="description" className="font-bold text-white">
+            Description:
+          </label>
+          <input
+            id="description"
+            onChange={handleInputDescription}
+            className="outline-none border border-black rounded w-full px-3 py-2 text-black"
+            type="text"
+            placeholder="What's the description."
+            value={inputDescription}
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="px-3 py-2 text-black bg-yellow-500 font-bold duration-300 hover:bg-gray-50 rounded"
+        >
           Add Todo
         </button>
       </form>
 
-      {todos.length > 0 && (
-        <div>
-          <div className="border border-black mt-10 p-2 md:w-1/2 mx-auto flex flex-col gap-2 rounded">
-            {todos.map((todo , index: number) => (
-              <div
-                key={todo.todo}
-                className="px-2 py-3 bg-black text-white rounded flex items-center justify-between gap-2"
-              >
-                <p className="text-wrap">{todo.todo}</p>
-                <div className="flex items-center justify-center">
-                  <RiDeleteBin6Line
-                    onClick={() => deleteTodo(index)}
-                    size={20}
-                    className="cursor-pointer"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-          {todos.length > 1 && (
-            <div className="flex justify-center mt-5">
-              <button
-                onClick={() => deleteTodo('all')}
-                className="px-4 py-2 bg-black text-yellow-400 hover:text-white rounded duration-200 cursor-pointer"
-              >
-                Delete All Todo
-              </button>
-            </div>
-          )}
-        </div>
-      )}
+      <TodoList />
     </div>
   );
 };

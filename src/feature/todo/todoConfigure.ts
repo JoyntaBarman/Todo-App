@@ -1,7 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface initState {
-  todoList: object[];
+interface TodoType {
+  title: string;
+  description: string;
+  compleated: boolean;
+}
+
+interface StateType {
+   todoList: TodoType[];
 }
 
 const todoConfigure = createSlice({
@@ -10,13 +16,14 @@ const todoConfigure = createSlice({
     todoList: [],
   },
   reducers: {
-    add: (state: {todoList: object[]}, actions) => {
-      const value = actions.payload.todo;
+    add: (state: StateType, actions) => {
+      const value = actions.payload;
       if (value) {
-        state.todoList.push({ todo: value });
+        state.todoList.push({...value, compleated: false});
       }
     },
     remove: (state, actions) => {
+      
       if (actions.payload.index === 'all') {
         return {todoList: []};
       }
@@ -26,8 +33,14 @@ const todoConfigure = createSlice({
 
       return {todoList: newArr};
     },
+
+    compleateTodo: (state : StateType, actions) => {
+      const existingTodo = state.todoList.find((item => item?.title === actions?.payload?.title)) ;
+      console.log(existingTodo)
+      existingTodo!.compleated! = true;
+    },
   },
 });
 
 export default todoConfigure.reducer;
-export const { add, remove } = todoConfigure.actions;
+export const { add, remove, compleateTodo } = todoConfigure.actions;

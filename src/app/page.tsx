@@ -1,46 +1,69 @@
-'use client';
-import Navbar from '@/components/Navbar';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useSelector } from 'react-redux';
+"use client";
+import CompleatedTask from "@/components/CompleatedTask";
+import EmptyTodo from "@/components/EmptyTodo";
+import UncompleatedTask from "@/components/UncompleatedTask";
+import { AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
-interface Todostate {
-  todo: todoListinterface;
+interface TodoType {
+  title: string;
+  description: string;
+  compleated: boolean;
 }
 
-interface todoListinterface {
-  todoList: object[]
+interface StateType {
+  todo: { todoList: TodoType[] };
 }
 
 export default function Home() {
-  const todos = useSelector((state: Todostate) => state?.todo.todoList);
+  const [selectedTab, setSelectedTab] = useState(0);
+  const todos = useSelector((state: StateType) => state?.todo.todoList);
+  const tabs = ["To Do", "Compleated"];
 
-  console.log(todos);
+  const uncompleatedList = todos.filter((item: TodoType) => {
+    if (!item.compleated) {
+      return item;
+    }
+  });
+  const compleatedList = todos.filter((item: TodoType) => {
+    if (item.compleated) {
+      return item;
+    }
+  });
+
 
   return (
-    <main className="flex justify-center">
+    <main className="flex justify-center p-5">
       {todos.length > 0 && (
-        <div className="md:w-1/2 border border-black p-4 mt-10 rounded flex flex-col gap-2">
-          {todos.map((todo: object) => (
-            <div key={todo.todo} className="bg-black text-white px-3 py-2 rounded">
-              <p>{todo.todo}</p>
-            </div>
-          ))}
+        <div className="w-full  md:w-1/2 border border-black p-4 mt-10 rounded flex flex-col gap-2">
+          <ul className="flex">
+            {tabs.map((item, index) => (
+              <li
+                onClick={() => setSelectedTab(index)}
+                className={`px-2 py-1 cursor-pointer font-bold border-b-4 hover:bg-gray-100 rounded ${
+                  selectedTab === index
+                    ? "border-yellow-400 text-yellow-500"
+                    : "border-white"
+                }`}
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+          <AnimatePresence>
+            {selectedTab === 0 ? (
+              <UncompleatedTask todos={uncompleatedList} />
+            ) : (
+              <CompleatedTask todos={compleatedList} />
+            )}
+          </AnimatePresence>
         </div>
       )}
 
       {todos.length > 0 || (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <p className="text-5xl text-gray-300 font-bold text-center">
-            Your Todo List Is Empty
-          </p>
-          <p className="text-center mt-5 text-gray-400">
-            please add todo from{' '}
-            <Link href={'/add'} className="text-blue-600 cursor-pointer">
-              Add Todo
-            </Link>
-          </p>
-        </div>
+        <EmptyTodo/>
       )}
     </main>
   );
