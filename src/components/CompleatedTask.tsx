@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import CompleatedTodoList from "./compleatedTodoList";
-
+import CompleatedTodoList from "./CompleatedTodoList";
 interface TodoType {
   title: string;
   description: string;

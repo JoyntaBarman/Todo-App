@@ -3,7 +3,6 @@ import CompleatedTask from "@/components/CompleatedTask";
 import EmptyTodo from "@/components/EmptyTodo";
 import UncompleatedTask from "@/components/UncompleatedTask";
 import { AnimatePresence } from "framer-motion";
-import Link from "next/link";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -41,6 +40,7 @@ export default function Home() {
           <ul className="flex">
             {tabs.map((item, index) => (
               <li
+              key={index}
                 onClick={() => setSelectedTab(index)}
                 className={`px-2 py-1 cursor-pointer font-bold border-b-4 hover:bg-gray-100 rounded ${
                   selectedTab === index

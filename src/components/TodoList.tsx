@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { remove } from "@/feature/todo/todoConfigure";
-import { animate, AnimatePresence, easeOut, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Swal from "sweetalert2";
 
 interface StateType {

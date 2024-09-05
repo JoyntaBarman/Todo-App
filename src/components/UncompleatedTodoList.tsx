@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { compleateTodo, remove } from "@/feature/todo/todoConfigure";
 import Swal from "sweetalert2";
-import { MdAdd } from "react-icons/md";
+import { BiCheck } from "react-icons/bi";
 
 interface TodoType {
   title: string;
@@ -16,7 +16,7 @@ interface props {
   todos: TodoType[];
 }
 
-const uncompleatedTodoList = ({ todos }: props) => {
+const UncompleatedTodoList = ({ todos }: props) => {
   const dispatch = useDispatch();
   const deleteTodo = (index: number) => {
     Swal.fire({
@@ -61,10 +61,10 @@ const uncompleatedTodoList = ({ todos }: props) => {
             <p className="text-wrap text-xs tracking-wider">{todo.description} </p>
           </div>
           <div className="flex items-center justify-center gap-5">
-            <MdAdd
+          <BiCheck
               onClick={() => addCompleated(todo?.title)}
               size={20}
-              className="cursor-pointer hover:text-yellow-400 duration-300 w-8 h-8 rounded-full"
+              className="cursor-pointer hover:text-yellow-400 duration-300 w-6 h-6 rounded-full font-bold"
             />
             <RiDeleteBin6Line
               onClick={() => deleteTodo(index)}
@@ -78,4 +78,4 @@ const uncompleatedTodoList = ({ todos }: props) => {
   );
 };
 
-export default uncompleatedTodoList;
+export default UncompleatedTodoList;

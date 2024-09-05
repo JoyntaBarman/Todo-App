@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import UncompleatedTodoList from "./uncompleatedTodoList";
+import UncompleatedTodoList from "./UncompleatedTodoList";
 
 interface TodoType {
   title: string;
@@ -21,7 +21,7 @@ const UncompleatedTask = ({ todos }: props) => {
         transition={{ duration: 0.7 }}
       >
         {todos.length > 0 ? (
-          <UncompleatedTodoList todos={todos}/>
+          <UncompleatedTodoList todos={todos} />
         ) : (
           <p className="font-bold text-center py-5 text-gray-400">
             You have no any task!
