@@ -4,12 +4,8 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { remove } from "@/feature/todo/todoConfigure";
-
-interface TodoType {
-  title: string;
-  description: string;
-  compleated: boolean;
-}
+import { TodoType } from "../../type";
+import DateFormate from "./DateFormate";
 
 interface props {
   todos: TodoType[];
@@ -47,21 +43,26 @@ const CompleatedTodoList = ({ todos }: props) => {
           transition={{ duration: 0.3 }}
           exit={{ opacity: 0 }}
           key={todo.title}
-          className="px-3 py-3 bg-black text-white rounded flex items-center justify-between gap-5"
+          className="px-3 py-3 bg-black text-white rounded"
         >
-          <div>
-            <h1 className="text-wrap font-bold text-base text-yellow-400">
-              {todo.title}
-            </h1>
-            <p className="text-wrap text-xs tracking-wider">{todo.description} </p>
+          <div className=" flex items-center justify-between gap-5">
+            <div>
+              <h1 className="text-wrap font-bold text-base text-yellow-400">
+                {todo.title}
+              </h1>
+              <p className="text-wrap text-xs tracking-wider">
+                {todo.description}{" "}
+              </p>
+            </div>
+            <div className="flex items-center justify-center gap-5">
+              <RiDeleteBin6Line
+                onClick={() => deleteTodo(index)}
+                size={20}
+                className="cursor-pointer hover:text-yellow-400 duration-300 w-6 h-6 rounded-full"
+              />
+            </div>
           </div>
-          <div className="flex items-center justify-center gap-5">
-            <RiDeleteBin6Line
-              onClick={() => deleteTodo(index)}
-              size={20}
-              className="cursor-pointer hover:text-yellow-400 duration-300 w-6 h-6 rounded-full"
-            />
-          </div>
+          <DateFormate date={todo.date!} />
         </motion.div>
       ))}
     </div>

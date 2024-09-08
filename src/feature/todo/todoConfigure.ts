@@ -1,14 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-interface TodoType {
-  title: string;
-  description: string;
-  compleated: boolean;
-}
-
-interface StateType {
-   todoList: TodoType[];
-}
+import { TodoStateType, TodoType } from '../../../type';
 
 const todoConfigure = createSlice({
   name: 'todo',
@@ -16,7 +7,7 @@ const todoConfigure = createSlice({
     todoList: [],
   },
   reducers: {
-    add: (state: StateType, actions) => {
+    add: (state: TodoStateType, actions) => {
       const value = actions.payload;
       if (value) {
         state.todoList.push({...value, compleated: false});
@@ -34,10 +25,12 @@ const todoConfigure = createSlice({
       return {todoList: newArr};
     },
 
-    compleateTodo: (state : StateType, actions) => {
-      const existingTodo = state.todoList.find((item => item?.title === actions?.payload?.title)) ;
-      console.log(existingTodo)
+    compleateTodo: (state : TodoStateType, actions) => {
+      let existingTodo: TodoType = state.todoList.find(((item: TodoType) => item?.title === actions?.payload?.title))! ;
+      const currentData = new Date().toLocaleString("en-US", {timeZone: "Asia/Dhaka"});
+      // {...existingTodo, compleated: true, date: currentData}
       existingTodo!.compleated! = true;
+      existingTodo.date = currentData;
     },
   },
 });
